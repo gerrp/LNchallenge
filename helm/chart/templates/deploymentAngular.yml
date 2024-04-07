@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}
+  namespace: {{ .Values.namespaceAngular }}
+  labels:
+    app: {{ .Values.imageAngular.app }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.imageAngular.app }}
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.maxsurge }}
+      maxUnavailable: {{ .Values.maxun }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.imageAngular.app }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "gerrp/ln-angular:{{ .Values.imageAngular.tag }}"
+        ports:
+        - containerPort: {{ .Values.containerAngular.port }}

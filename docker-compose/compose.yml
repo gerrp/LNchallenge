@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  flask:
+    image: gerrp/ln-flask:1.0
+    container_name: flask
+    ports:
+      - "5000:5000"
+  angular:
+    image: gerrp/ln-angular:1.0
+    container_name: angular
+    ports:
+      - "80:80"
+  

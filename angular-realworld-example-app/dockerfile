@@ -1,0 +1,44 @@
+#Version de node
+FROM node:20
+
+#Creación de directorio
+RUN mkdir /app
+#Workdir
+WORKDIR /app
+#Copia de archivos locales a contenedor
+COPY . /app/
+
+#Angular
+RUN npm install -g @angular/cli@latest
+
+#Instación de requirements
+RUN yarn install && \
+    yarn cache clean
+
+#Build de app
+RUN ng build 
+
+#Instalacion de apache
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y apache2=2.4.57-2 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* 
+
+#App -> Apache
+WORKDIR  /app/dist/angular-conduit
+RUN cp -r ./* /var/www/html
+
+#Puerto expuesto
+EXPOSE 80
+#Apache corriendo
+CMD ["apache2ctl", "-D", "FOREGROUND"]
+
+
+
+
+
+
+
+
+
+

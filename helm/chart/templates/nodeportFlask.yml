@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.nodeportFlask }}
+  namespace: {{ .Values.namespaceFlask }}
+spec: 
+  selector:
+    app: {{ .Values.imageFlask.app }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.containerFlask.port }}
+      nodePort: {{ .Values.containerFlask.node }}
+      targetPort: {{ .Values.containerFlask.port }}
+  type: NodePort

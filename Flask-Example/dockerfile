@@ -1,0 +1,24 @@
+#Imagen
+FROM python:3.8 
+
+#Creación de directorio
+RUN mkdir /app
+#Workdir
+WORKDIR /app
+#Copia de archivos locales a contenedor
+COPY . /app/
+
+#Instalación de requirements 
+RUN pip install --no-cache-dir -r requirements.txt
+
+#Variable de entorno
+ENV FLASK_APP=app.py
+
+#Puerto expuesto
+EXPOSE 5000
+
+#Entrypoint para CMD
+ENTRYPOINT ["python"]
+
+#Aplicación corriendo
+CMD ["-m", "flask", "run", "--host", "0.0.0.0"]

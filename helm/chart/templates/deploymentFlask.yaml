@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chart.fullname" . }}
+  namespace: {{ .Values.namespaceFlask }}
+  labels:
+    app: {{ .Values.imageFlask.app }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.imageFlask.app }}
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.maxsurge }}
+      maxUnavailable: {{ .Values.maxun }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.imageFlask.app }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "gerrp/ln-flask:{{ .Values.imageFlask.tag }}"
+        ports:
+        - containerPort: {{ .Values.containerFlask.port }}
